@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuestionario SUSESO/ISTAS21 – Versión completa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+    :root{
+      --bg:#0b1020;--card:#121936;--muted:#7381a1;--text:#e8edff;--acc:#7aa2ff;--acc2:#22d3ee;--danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:linear-gradient(180deg,#0b1020,#0b132b 60%,#0f172a);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:var(--acc)}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;background:rgba(11,16,32,.8);backdrop-filter:blur(10px);z-index:10;border-bottom:1px solid rgba(255,255,255,.06)}
+    .title{font-size:clamp(20px,3vw,32px);font-weight:800;letter-spacing:.3px;display:flex;align-items:center;gap:12px}
+    .badge{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#051024;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:24px;margin:18px 0}
+    .grid{display:grid;gap:16px}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:900px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+    h2{font-size:22px;margin:0 0 10px 0}
+    h3{font-size:18px;margin:12px 0 6px 0;color:#cbd5e1}
+    p.muted{color:var(--muted);margin:0 0 14px}
+    fieldset{border:0;padding:0;margin:0}
+    legend{font-weight:700;margin-bottom:8px}
+    label.q{display:block;padding:14px 14px;border:1px solid rgba(255,255,255,.08);border-radius:14px;margin:10px 0;background:rgba(255,255,255,.02)}
+    .qcode{font-weight:700;color:#a5b4fc;margin-right:8px}
+    .opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .opt{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:8px 10px;border-radius:12px}
+    input[type="text"],input[type="number"],textarea,select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:var(--text)}
+    textarea{min-height:90px}
+    .section-head{display:flex;align-items:center;gap:12px;margin:26px 0 6px}
+    .section-head .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 0 0 6px rgba(34,211,238,.15)}
+    .btn{appearance:none;border:0;padding:12px 18px;border-radius:14px;font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#051024}
+    .btn.soft{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.1)}
+    .btnbar{display:flex;gap:10px;flex-wrap:wrap}
+    .sticky-actions{position:sticky;bottom:0;padding:14px 0;background:linear-gradient(180deg,rgba(11,16,32,0),rgba(11,16,32,.95) 30%,rgba(11,16,32,.95));backdrop-filter:blur(8px)}
+    .req{color:#fca5a5;font-size:12px;margin-left:8px}
+    .small{font-size:12px;color:var(--muted)}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);margin:18px 0}
+    .pill{display:inline-block;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);padding:6px 10px;border-radius:999px;font-size:12px;color:#d1d5db}
+    .success{background:#022c22;border:1px solid #10b981;color:#d1fae5}
+    .error{background:#3b0a0a;border:1px solid #ef4444;color:#fecaca}
+    .hide{display:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding:14px 24px;">
+      <div class="title"><span class="badge">SUSESO/ISTAS21</span> Versión completa</div>
+      <div><span class="pill">Privado & confidencial</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>Instrucciones</h2>
+      <p class="muted">Por favor, conteste <b>TODAS</b> las preguntas. No hay respuestas buenas o malas. Sus respuestas serán tratadas con absoluta confidencialidad.</p>
+      <details>
+        <summary class="pill">Información de contacto & envío por correo</summary>
+        <p class="small">Por defecto, al enviar se intentará remitir un correo a <b>valeskacandia16@gmail.com</b> usando <i>EmailJS</i>. Debe ingresar sus credenciales (clave pública, Service ID y Template ID) en la sección <b>Configuración</b> al final de la página. Si no se configuran, se abrirá su cliente de correo con un <i>mailto:</i> pre-relleno como respaldo.</p>
+      </details>
+    </div>
+
+    <form id="form" class="card" autocomplete="off">
+      <div class="section-head"><span class="dot"></span><h2>Sección general</h2></div>
+
+      <div class="divider"></div>
+      <h3>Datos demográficos</h3>
+      <div id="demograficos"></div>
+
+      <div class="divider"></div>
+      <h3>Salud y bienestar personal</h3>
+      <div id="salud"></div>
+
+      <div class="divider"></div>
+      <h3>Trabajo y empleo actual</h3>
+      <div id="trabajo"></div>
+
+      <div class="divider"></div>
+      <h3>Licencias médicas</h3>
+      <div id="licencias"></div>
+
+      <div class="divider"></div>
+      <div class="section-head"><span class="dot"></span><h2>Sección específica de riesgo psicosocial</h2></div>
+      <div id="psicosocial"></div>
+
+      <div class="sticky-actions">
+        <div class="btnbar">
+          <button type="submit" class="btn primary">Enviar respuestas</button>
+          <button type="button" id="btnPreview" class="btn soft">Previsualizar gráficos</button>
+          <button type="button" id="btnExport" class="btn soft">Descargar JSON</button>
+        </div>
+        <p id="status" class="small"></p>
+      </div>
+    </form>
+
+    <section id="resultados" class="card hide">
+      <div class="section-head"><span class="dot"></span><h2>Resultados y gráficos (por persona)</h2></div>
+      <p class="muted">Resumen de sus respuestas (no muestra acumulado institucional).</p>
+      <canvas id="chartBloques" height="140"></canvas>
+      <div class="divider"></div>
+      <canvas id="chartLikert" height="140"></canvas>
+      <div class="divider"></div>
+      <details>
+        <summary class="pill">JSON de respuestas</summary>
+        <pre id="jsonOut" class="small"></pre>
+      </details>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><span class="dot"></span><h2>Configuración de correo (opcional)</h2></div>
+      <p class="small">Para enviar automáticamente al correo sin abrir su cliente, configure EmailJS:</p>
+      <div class="grid cols-3">
+        <div>
+          <label>Public Key (EmailJS)
+            <input id="cfg_public" type="text" placeholder="p.ej. 2l4EXAMPLEcEw" />
+          </label>
+        </div>
+        <div>
+          <label>Service ID
+            <input id="cfg_service" type="text" placeholder="p.ej. service_xxx" />
+          </label>
+        </div>
+        <div>
+          <label>Template ID
+            <input id="cfg_template" type="text" placeholder="p.ej. template_xxx" />
+          </label>
+        </div>
+      </div>
+      <p class="small">El correo destino está fijado en <b>valeskacandia16@gmail.com</b> (puede cambiarlo en el código si lo requiere).</p>
+    </section>
+
+    <footer class="container" style="opacity:.8;padding-bottom:60px">
+      <p class="small">Hecho para tu uso exclusivo. Este archivo es 100% tuyo y lo puedes hospedar donde quieras.</p>
+    </footer>
+  </main>
+
+  <script>
+  // --------- UTILIDADES UI ---------
+  const byId = (id)=>document.getElementById(id);
+  const statusEl = byId('status');
+  function setStatus(msg, kind=''){statusEl.className = 'small ' + (kind?kind:''); statusEl.textContent = msg}
+
+  // --------- ESCALAS (textos) ---------
+  const SCALES = {
+    sexo:["Hombre","Mujer"],
+    edad:["Menos de 26 años","Entre 26 y 35 años","Entre 36 y 45 años","Entre 46 y 55 años","Más de 55 años"],
+    sg1:["Excelente","Muy buena","Buena","Regular","Mala"],
+    sg_tf:["Totalmente cierta","Casi siempre cierta","No sé","Casi siempre falsa","Totalmente falsa"],
+    ult4s:["Siempre","Muchas veces","Algunas veces","Sólo alguna vez","Nunca"],
+    binario:["No","Sí"],
+    te9:["a tiempo parcial","a tiempo completo","no sujeto a cumplimiento de horario"],
+    te10:["horario diurno (mañana y tarde)","turno fijo de mañana","turno fijo de tarde","turno fijo de noche","turnos rotatorios"],
+    te11:["de lunes a viernes","de lunes a sábado","sólo fines de semana o festivos","de lunes a viernes y a veces sábado, domingo y festivos","semana corrida, incluyendo domingo y festivos"],
+    te12:["no me cambian de horario ni de días de trabajo","usualmente me lo comunican con varios días de anticipación y no me produce mayores inconvenientes","habitualmente me lo comunican con algunos días de anticipación, pero me ocasiona dificultades en otros aspectos de mi vida","habitualmente me lo comunican de un día para otro","habitualmente me lo comunican en el mismo día"],
+    te14:["la semana pasada trabajé 45 (44) horas o más","trabajo a tiempo parcial para esta empresa o institución","tengo una distribución irregular de mi jornada de trabajo (no siempre trabajo las mismas horas)","he estado de vacaciones, enfermo o con permiso","otros motivos"],
+    te15:["tengo contrato indefinido o mi cargo es de planta","tengo contrato temporal o mi cargo es a contrata","trabajo por faenas o proyectos","estoy contratado por una empresa externa","tengo contrato a honorarios","soy estudiante en práctica","no tengo contrato"],
+    te16:["$200.000 o menos","entre $200.001 y $500.000","entre $500.001 y $800.000","entre $800.001 y $1.000.000","entre $1.000.001 y $2.000.000","Más de $2.000.000"],
+    te17:["Fijo","Sueldo base más comisiones o variable","Sólo variable"],
+    te18:["No tengo deudas.","Hasta 10%","Hasta 25%","Hasta 50%","Más de 50%"],
+    te19:["No tengo deudas.","Sin dificultades","Ocasionales dificultades","Siempre con dificultades","Permanentes y graves dificultades"],
+    te20:["Soy la/el principal responsable y hago la mayor parte de las tareas del hogar.","Hago más o menos la mitad de las tareas del hogar","Hago más o menos la cuarta parte de las tareas del hogar","Solo hago tareas puntuales","No hago ninguna o casi ninguna de estas tareas"],
+    te21:["Siempre","La mayoría de las veces","Algunas veces","Solo unas pocas veces","Nunca"],
+    likert5:["Siempre","La mayoría de las veces","Algunas veces","Sólo unas pocas veces","Nunca"],
+    jefes:["Siempre","La mayoría de las veces","Algunas veces","Sólo unas pocas veces","Nunca"],
+    apoyo:["Siempre","La mayoría de las veces","Algunas veces","Sólo unas pocas veces","Nunca"],
+    reco:["Siempre","La mayoría de las veces","Algunas veces","Sólo unas pocas veces","Nunca"],
+    preocupa:["Estoy muy preocupado","Estoy bastante preocupado","Estoy más o menos preocupado","Estoy un poco preocupado","No estoy preocupado por esto"],
+    respFam:["Siempre","La mayoría de las veces","Algunas veces","Sólo unas pocas veces","Nunca"]
+  };
+
+  // --------- ESQUEMA COMPLETO DE PREGUNTAS ---------
+  const SCHEMA = [
+    // Demográficos
+    { section:'demograficos', blocks:[
+      { title:'Sexo', items:[{code:'Sexo', text:'Sexo', options:SCALES.sexo, required:true}] },
+      { title:'¿Qué edad tiene?', items:[{code:'Edad', text:'¿Qué edad tiene?', options:SCALES.edad, required:true}] },
+    ]},
+
+    // Salud y bienestar personal
+    { section:'salud', blocks:[
+      { title:'Estado general de salud', items:[{code:'SG1', text:'En general diría Ud. que su salud es', options:SCALES.sg1, required:true}] },
+      { title:'Para Ud. ¿qué tan cierta o falsa es cada afirmación respecto a su salud?', items:[
+        {code:'SG2', text:'Me enfermo con más facilidad que otras personas', options:SCALES.sg_tf, required:true},
+        {code:'SG3', text:'Estoy tan saludable como cualquier persona', options:SCALES.sg_tf, required:true},
+        {code:'SG4', text:'Creo que mi salud va a empeorar', options:SCALES.sg_tf, required:true},
+        {code:'SG5', text:'Mi salud es excelente', options:SCALES.sg_tf, required:true},
+      ]},
+      { title:'Durante las últimas cuatro semanas', items:[
+        {code:'SM1', text:'¿Estuvo muy nerviosa/o?', options:SCALES.ult4s, required:true},
+        {code:'SM2', text:'¿Estuvo muy decaída/o que nada lo anima?', options:SCALES.ult4s, required:true},
+        {code:'SM3', text:'¿Se sintió tranquila/o y calmada/o?', options:SCALES.ult4s, required:true},
+        {code:'SM4', text:'¿Se sintió desanimada/o y triste?', options:SCALES.ult4s, required:true},
+        {code:'SM5', text:'¿Se sintió una persona feliz?', options:SCALES.ult4s, required:true},
+        {code:'VT1', text:'¿Se sintió muy animosa/o?', options:SCALES.ult4s, required:true},
+        {code:'VT2', text:'¿Se sintió con mucha energía?', options:SCALES.ult4s, required:true},
+        {code:'VT3', text:'¿Se sintió agotada/o?', options:SCALES.ult4s, required:true},
+        {code:'VT4', text:'¿Se sintió cansada/o?', options:SCALES.ult4s, required:true},
+      ]},
+      { title:'Accidentes y enfermedades laborales', items:[
+        {code:'AT1', text:'En los últimos 12 meses, ¿ha tenido usted algún accidente de trabajo? (excluya accidentes de trayecto)', options:SCALES.binario, required:true},
+        {code:'EP1', text:'¿Usted tiene o ha tenido alguna enfermedad diagnosticada provocada por el trabajo?', options:SCALES.binario, required:true},
+      ]},
+      { title:'Durante las últimas cuatro semanas, ¿con qué frecuencia ha tenido los siguientes problemas?', items:[
+        {code:'SR1', text:'No he tenido ánimos para estar con gente', options:SCALES.ult4s, required:true},
+        {code:'SR2', text:'No he podido dormir bien', options:SCALES.ult4s, required:true},
+        {code:'SR3', text:'He estado irritable', options:SCALES.ult4s, required:true},
+        {code:'SR4', text:'Me he sentido agobiado/a', options:SCALES.ult4s, required:true},
+        {code:'SR5', text:'¿Ha sentido opresión o dolor en el pecho?', options:SCALES.ult4s, required:true},
+        {code:'SR6', text:'¿Le ha faltado el aire?', options:SCALES.ult4s, required:true},
+        {code:'SR7', text:'¿Ha sentido tensión en los músculos?', options:SCALES.ult4s, required:true},
+        {code:'SR8', text:'¿Ha tenido dolor de cabeza?', options:SCALES.ult4s, required:true},
+        {code:'SR9', text:'¿Ha tenido problemas para concentrarse?', options:SCALES.ult4s, required:true},
+        {code:'SR10', text:'¿Le ha costado tomar decisiones?', options:SCALES.ult4s, required:true},
+        {code:'SR11', text:'¿Ha tenido dificultades para acordarse de las cosas?', options:SCALES.ult4s, required:true},
+        {code:'SR12', text:'¿Ha tenido dificultades para pensar de forma clara?', options:SCALES.ult4s, required:true},
+      ]},
+    ]},
+
+    // Trabajo y empleo actual
+    { section:'trabajo', blocks:[
+      { title:'Identificación del puesto', items:[
+        {code:'TE1', text:'¿En qué unidad geográfica (sucursal, piso, región, etc.) trabaja usted?', type:'text', required:true},
+        {code:'TE2', text:'¿En qué estamento, profesión o cargo está usted?', type:'text', required:true},
+        {code:'TE3', text:'¿En qué departamento, unidad o sección trabaja usted?', type:'text', required:true},
+      ]},
+      { title:'Estructura organizacional reciente', items:[
+        {code:'TE4', text:'En el último año, ¿ha trabajado en dos o más secciones o departamentos al mismo tiempo?', options:SCALES.binario, required:true},
+        {code:'TE5', text:'En el último año, ¿ha tenido dos o más jefes o supervisores al mismo tiempo?', options:SCALES.binario, required:true},
+        {code:'TE6', text:'¿El trabajo que realiza se corresponde con su sueldo?', options:["Sí","No, por encima","No, por debajo","No lo sé"], required:true},
+      ]},
+      { title:'Antigüedad y jornada', items:[
+        {code:'TE7', text:'¿Cuánto tiempo lleva trabajando en esta empresa o institución?', options:["De 0 hasta 6 meses","Más de 6 meses y hasta 2 años","Más de 2 años y hasta 5 años","Más de 5 años y hasta de 10 años","Más de 10 años"], required:true},
+        {code:'TE8', text:'¿Considera que los ascensos o promociones que ha tenido están en armonía con el tiempo que lleva en la empresa o institución?', options:["No","Sí"], required:true},
+        {code:'TE9', text:'Su jornada de trabajo es:', options:SCALES.te9, required:true},
+        {code:'TE10', text:'Su horario de trabajo es:', options:SCALES.te10, required:true},
+        {code:'TE11', text:'Su jornada laboral es:', options:SCALES.te11, required:true},
+        {code:'TE12', text:'Si le cambian de horario, ¿con cuánto tiempo de antelación se lo comunican?', options:SCALES.te12, required:true},
+      ]},
+      { title:'Horas y relación contractual', items:[
+        {code:'TE13', text:'Indique cuántas horas semanales trabajó la semana pasada', type:'number', min:0, max:120, required:true},
+        {code:'TE14', text:'Si anotó menos de 45 (44 sector público) horas, señale la razón. Si más, marque la primera alternativa.', options:SCALES.te14, required:true},
+        {code:'TE15', text:'¿Qué tipo de relación laboral tiene con la empresa o institución?', options:SCALES.te15, required:true},
+      ]},
+      { title:'Ingresos y deudas', items:[
+        {code:'TE16', text:'Aproximadamente, ¿cuánto es su sueldo líquido mensual?', options:SCALES.te16, required:true},
+        {code:'TE17', text:'Su sueldo es', options:SCALES.te17, required:true},
+        {code:'TE18', text:'¿Qué parte de su sueldo destina al pago de deudas?', options:SCALES.te18, required:true},
+        {code:'TE19', text:'Si tiene deudas, indique qué grado de dificultad tiene para pagarlas', options:SCALES.te19, required:true},
+      ]},
+      { title:'Trabajo doméstico y cuidados', items:[
+        {code:'TE20', text:'¿Qué parte del trabajo familiar y/o doméstico le toca hacer a Ud.?', options:SCALES.te20, required:true},
+        {code:'TE21', text:'Si está ausente un día de casa, las tareas domésticas que realiza, ¿se quedan sin hacer?', options:SCALES.te21, required:true},
+      ]},
+    ]},
+
+    // Licencias médicas
+    { section:'licencias', blocks:[
+      { title:'Licencias médicas', items:[
+        {code:'LM1', text:'En los últimos 12 meses, ¿cuántas licencias médicas ha tenido aproximadamente?', type:'number', min:0, required:true},
+        {code:'LM3', text:'En los últimos 12 meses, ¿cuántos días aproximadamente ha estado con licencia médica?', type:'number', min:0, required:true},
+      ]},
+    ]},
+
+    // Sección específica de riesgo psicosocial
+    { section:'psicosocial', blocks:[
+      { title:'Exigencias cuantitativas (carga/tiempo)', items:[
+        {code:'CU1', text:'¿Tiene que trabajar muy rápido para entregar tareas solicitadas en poco tiempo?', options:SCALES.likert5, required:true},
+        {code:'CU2', text:'¿La distribución de tareas es irregular y provoca que se le acumule el trabajo?', options:SCALES.likert5, required:true},
+        {code:'CU3', text:'¿Tiene tiempo para tener al día su trabajo?', options:SCALES.likert5, required:true},
+        {code:'CU4', text:'¿Se retrasa en la entrega de su trabajo?', options:SCALES.likert5, required:true},
+        {code:'CU5', text:'¿Puede hacer su trabajo con tranquilidad y tenerlo al día?', options:SCALES.likert5, required:true},
+        {code:'CU6', text:'¿Tiene tiempo suficiente para hacer su trabajo?', options:SCALES.likert5, required:true},
+        {code:'CU7', text:'¿Tiene que quedarse después de la hora de salida para completar su trabajo?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Exigencias cognitivas y de decisión', items:[
+        {code:'CO1', text:'En su trabajo, ¿tiene usted que controlar o estar atento a muchas situaciones a la vez?', options:SCALES.likert5, required:true},
+        {code:'CO2', text:'En su trabajo, ¿tiene que memorizar muchas cosas?', options:SCALES.likert5, required:true},
+        {code:'CO3', text:'¿Su trabajo requiere que sea capaz de proponer nuevas ideas?', options:SCALES.likert5, required:true},
+        {code:'CO4', text:'En su trabajo, ¿tiene usted que tomar decisiones en forma rápida?', options:SCALES.likert5, required:true},
+        {code:'CO5', text:'En su trabajo, ¿tiene usted que tomar decisiones difíciles?', options:SCALES.likert5, required:true},
+        {code:'CO6', text:'¿Tiene que tomar decisiones que son importantes para su lugar de trabajo?', options:SCALES.likert5, required:true},
+        {code:'CO7', text:'El trabajo que usted hace, ¿puede tener repercusiones importantes sobre sus compañeros, clientes, usuarios, máquinas o instalaciones?', options:SCALES.likert5, required:true},
+        {code:'CO8', text:'En su trabajo, ¿tiene que manejar muchos conocimientos?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Exigencias emocionales y de expresión', items:[
+        {code:'EM1', text:'¿Hay en su trabajo momentos y/o situaciones que le producen desgaste emocional?', options:SCALES.likert5, required:true},
+        {code:'EM2', text:'En general, ¿considera usted que su trabajo le produce desgaste emocional?', options:SCALES.likert5, required:true},
+        {code:'EE1', text:'En su trabajo, ¿tiene usted que guardar sus opiniones y no expresarlas?', options:SCALES.likert5, required:true},
+        {code:'EE2', text:'En su trabajo, ¿tiene usted que guardar sus emociones y no expresarlas?', options:SCALES.likert5, required:true},
+        {code:'ES1', text:'¿Su trabajo requiere mucha concentración?', options:SCALES.likert5, required:true},
+        {code:'ES2', text:'¿Su trabajo requiere mirar con detalle?', options:SCALES.likert5, required:true},
+        {code:'ES3', text:'¿Su trabajo requiere atención constante?', options:SCALES.likert5, required:true},
+        {code:'ES4', text:'¿Su trabajo requiere un alto nivel de exactitud?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Margen de autonomía', items:[
+        {code:'IN1', text:'¿Otras personas toman decisiones sobre sus tareas?', options:SCALES.likert5, required:true},
+        {code:'IN2', text:'¿Tiene poder para decidir sobre el ritmo al que trabaja?', options:SCALES.likert5, required:true},
+        {code:'IN3', text:'¿Puede escoger a quién tiene como compañero/a de trabajo?', options:SCALES.likert5, required:true},
+        {code:'IN4', text:'¿Tiene poder para decidir sobre la cantidad de trabajo que se le asigna?', options:SCALES.likert5, required:true},
+        {code:'IN5', text:'¿Tiene poder para decidir sobre el horario en el que trabaja?', options:SCALES.likert5, required:true},
+        {code:'IN6', text:'¿Tiene poder para decidir sobre la calidad del trabajo que usted tiene?', options:SCALES.likert5, required:true},
+        {code:'IN7', text:'¿Tiene poder para decidir sobre el orden en el que realiza sus tareas?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Control de tiempo', items:[
+        {code:'CT1', text:'¿Puede decidir cuándo hace un descanso?', options:SCALES.likert5, required:true},
+        {code:'CT2', text:'¿Puede tomar las vacaciones más o menos cuando usted quiere?', options:SCALES.likert5, required:true},
+        {code:'CT3', text:'¿Puede dejar su trabajo un momento para conversar con un compañero o compañera?', options:SCALES.likert5, required:true},
+        {code:'CT4', text:'Si tiene algún asunto personal o familiar, ¿puede dejar su puesto de trabajo al menos una hora, sin tener que pedir un permiso especial?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Desarrollo, sentido e integración', items:[
+        {code:'PD1', text:'¿Su trabajo es variado (tareas diferentes y diversas)?', options:SCALES.likert5, required:true},
+        {code:'PD2', text:'¿Su trabajo requiere un alto nivel de especialización?', options:SCALES.likert5, required:true},
+        {code:'PD3', text:'¿Tiene que hacer lo mismo una y otra vez, en forma repetida?', options:SCALES.likert5, required:true},
+        {code:'PD4', text:'¿Su trabajo requiere que tenga iniciativa?', options:SCALES.likert5, required:true},
+        {code:'PD5', text:'¿Su trabajo permite que aprenda cosas nuevas?', options:SCALES.likert5, required:true},
+        {code:'PD6', text:'¿La realización de su trabajo permite que aplique sus habilidades y conocimientos?', options:SCALES.likert5, required:true},
+        {code:'PD7', text:'¿Su trabajo le da la oportunidad de mejorar sus habilidades técnicas y profesionales?', options:SCALES.likert5, required:true},
+        {code:'ST1', text:'Las tareas que hace ¿tienen sentido para usted?', options:SCALES.likert5, required:true},
+        {code:'ST2', text:'Las tareas que hace ¿le parecen importantes?', options:SCALES.likert5, required:true},
+        {code:'ST3', text:'¿Se siente comprometido con su profesión u oficio?', options:SCALES.likert5, required:true},
+        {code:'IE1', text:'¿Le gustaría quedarse en la empresa o institución en la que está para el resto de su vida laboral?', options:SCALES.likert5, required:true},
+        {code:'IE2', text:'¿Habla con entusiasmo de su empresa o institución?', options:SCALES.likert5, required:true},
+        {code:'IE3', text:'¿Siente que los problemas en su empresa o institución son también suyos?', options:SCALES.likert5, required:true},
+        {code:'IE4', text:'¿Siente que su empresa o institución tiene una gran importancia para usted?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Definición de tareas y conflictos', items:[
+        {code:'RL1', text:'¿Sabe exactamente qué margen de autonomía tiene en su trabajo?', options:SCALES.likert5, required:true},
+        {code:'RL2', text:'¿Su trabajo tiene objetivos o metas claras?', options:SCALES.likert5, required:true},
+        {code:'RL3', text:'¿Sabe exactamente qué tareas son de su responsabilidad?', options:SCALES.likert5, required:true},
+        {code:'RL4', text:'¿Sabe exactamente qué se espera de usted en el trabajo?', options:SCALES.likert5, required:true},
+        {code:'CR1', text:'¿Debe hacer o se siente presionado a hacer cosas en el trabajo que no son aceptadas por algunas personas?', options:SCALES.likert5, required:true},
+        {code:'CR2', text:'¿Se le exigen cosas contradictorias en el trabajo?', options:SCALES.likert5, required:true},
+        {code:'CR3', text:'¿Tiene que hacer tareas que usted cree que deberían hacerse de otra manera?', options:SCALES.likert5, required:true},
+        {code:'CR4', text:'¿Tiene que realizar tareas que le parecen innecesarias?', options:SCALES.likert5, required:true},
+        {code:'CR5', text:'¿Tiene que hacer cosas en contra de sus principios y valores en el trabajo?', options:SCALES.likert5, required:true},
+      ]},
+      { title:'Relación con jefaturas', items:[
+        {code:'CL1', text:'Sus jefes directos, ¿se aseguran de que cada trabajador(a) tenga oportunidades de desarrollo profesional?', options:SCALES.jefes, required:true},
+        {code:'CL2', text:'Sus jefes directos, ¿planifican bien el trabajo?', options:SCALES.jefes, required:true},
+        {code:'CL3', text:'Sus jefes directos, ¿resuelven bien los conflictos?', options:SCALES.jefes, required:true},
+        {code:'CL4', text:'Sus jefes directos, ¿se comunican de buena forma y claramente?', options:SCALES.jefes, required:true},
+        {code:'CL5', text:'Sus jefes directos, ¿le dan importancia a que los trabajadores(as) estén a gusto?', options:SCALES.jefes, required:true},
+        {code:'CL6', text:'Sus jefes directos, ¿asignan bien el trabajo?', options:SCALES.jefes, required:true},
+      ]},
+      { title:'Apoyo para realizar el trabajo', items:[
+        {code:'RS1', text:'¿Se le informa con suficiente anticipación de cambios que pueden afectar su futuro?', options:SCALES.apoyo, required:true},
+        {code:'RS2', text:'¿Recibe toda la información que necesita para realizar bien su trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RS3', text:'¿Su superior habla con usted acerca de cómo lleva a cabo su trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RS4', text:'Su superior directo, ¿está dispuesto a escuchar sus problemas en el trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RS5', text:'¿Recibe ayuda y apoyo de su superior directo?', options:SCALES.apoyo, required:true},
+        {code:'RC1', text:'¿Con qué frecuencia habla con sus compañeros sobre cómo lleva a cabo su trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RC2', text:'¿Con qué frecuencia sus compañeros están dispuestos a escuchar sus problemas en el trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RC3', text:'¿Con qué frecuencia recibe ayuda y apoyo para el trabajo de sus compañeras o compañeros?', options:SCALES.apoyo, required:true},
+        {code:'RC4', text:'¿Hay un buen ambiente entre usted y sus compañeros de trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RC5', text:'Entre compañeros y compañeras, ¿se ayudan en el trabajo?', options:SCALES.apoyo, required:true},
+        {code:'RC6', text:'¿Siente que forma parte de un grupo o equipo de trabajo?', options:SCALES.apoyo, required:true},
+      ]},
+      { title:'Reconocimiento al trabajo', items:[
+        {code:'ET1', text:'Mis superiores me dan el reconocimiento que merezco', options:SCALES.reco, required:true},
+        {code:'ET2', text:'Mis compañeros de trabajo me dan el reconocimiento que merezco', options:SCALES.reco, required:true},
+        {code:'ET3', text:'En las situaciones difíciles en el trabajo recibo el apoyo necesario', options:SCALES.reco, required:true},
+        {code:'ET4', text:'En mi trabajo me tratan injustamente', options:SCALES.reco, required:true},
+        {code:'ET5', text:'Si pienso en todo el trabajo y esfuerzo que he realizado, el reconocimiento que recibo me parece adecuado', options:SCALES.reco, required:true},
+      ]},
+      { title:'Preocupaciones por cambios', items:[
+        {code:'IC1', text:'¿Está preocupado por si le despiden o no le renuevan el contrato?', options:SCALES.preocupa, required:true},
+        {code:'IC2', text:'¿Está preocupado por lo difícil que sería encontrar otro trabajo si se quedara cesante?', options:SCALES.preocupa, required:true},
+        {code:'IC3', text:'¿Está preocupado por si le varían el sueldo?', options:SCALES.preocupa, required:true},
+        {code:'IC4', text:'¿Está preocupado por si no le hacen un contrato indefinido?', options:SCALES.preocupa, required:true},
+        {code:'IC5', text:'¿Está preocupado por si no le ascienden?', options:SCALES.preocupa, required:true},
+        {code:'IT1', text:'¿Está preocupado por si le trasladan contra su voluntad?', options:SCALES.preocupa, required:true},
+        {code:'IT2', text:'¿Está preocupado por si le cambian de tareas contra su voluntad?', options:SCALES.preocupa, required:true},
+        {code:'IT3', text:'¿Está preocupado por si le cambian contra su voluntad los horarios?', options:SCALES.preocupa, required:true},
+      ]},
+      { title:'Responsabilidades familiares', items:[
+        {code:'DP1', text:'Cuando está en el trabajo, ¿piensa en las exigencias domésticas y familiares?', options:SCALES.respFam, required:true},
+        {code:'DP2', text:'¿Hay situaciones en las que debería estar en el trabajo y en la casa a la vez?', options:SCALES.respFam, required:true},
+      ]},
+    ]},
+  ];
+
+  // --------- RENDER DEL FORM ---------
+  function render(){
+    SCHEMA.forEach(sec=>{
+      const host = byId(sec.section);
+      sec.blocks.forEach(block=>{
+        const fs = document.createElement('fieldset');
+        const lg = document.createElement('legend');
+        lg.textContent = block.title; fs.appendChild(lg);
+        block.items.forEach(item=>{
+          const wrap = document.createElement('label');
+          wrap.className='q';
+          const title = document.createElement('div');
+          title.innerHTML = `<span class="qcode">${item.code}</span> ${item.text} ${item.required?'<span class="req">*</span>':''}`;
+          wrap.appendChild(title);
+
+          if(item.options){
+            const opts = document.createElement('div');
+            opts.className='opts';
+            item.options.forEach((opt,idx)=>{
+              const o = document.createElement('label');
+              o.className='opt';
+              const input = document.createElement('input');
+              input.type='radio';
+              input.name=item.code;
+              input.value=opt;
+              if(item.required) input.required=true;
+              const span = document.createElement('span'); span.textContent=opt;
+              o.appendChild(input); o.appendChild(span);
+              opts.appendChild(o);
+            });
+            wrap.appendChild(opts);
+          } else {
+            // text / number
+            const inp = document.createElement('input');
+            inp.type = item.type||'text';
+            if(item.min!=null) inp.min=item.min;
+            if(item.max!=null) inp.max=item.max;
+            inp.name=item.code;
+            inp.placeholder=item.placeholder||'';
+            if(item.required) inp.required=true;
+            wrap.appendChild(inp);
+          }
+
+          host.appendChild(wrap);
+        });
+      });
+    });
+  }
+  render();
+
+  // --------- CAPTURA DE RESPUESTAS ---------
+  function getAnswers(){
+    const data = {};
+    const inputs = document.querySelectorAll('input[type=radio]:checked, input[type=text], input[type=number]');
+    inputs.forEach(inp=>{
+      if(!inp.name) return;
+      const val = (inp.type==='number' && inp.value!=='')? Number(inp.value) : inp.value;
+      data[inp.name]=val;
+    });
+    data.__meta = {
+      ts: new Date().toISOString(),
+      ua: navigator.userAgent
+    };
+    return data;
+  }
+
+  function allRequiredAnswered(){
+    // Simple check: required radios should have one checked per group
+    const requiredGroups = [...document.querySelectorAll('input[required][type=radio]')]
+      .map(i=>i.name).filter((v,i,a)=>a.indexOf(v)===i);
+    for(const name of requiredGroups){
+      if(!document.querySelector(`input[name="${name}"]:checked`)){
+        const q = document.querySelector(`input[name="${name}"]`).closest('label.q');
+        q.scrollIntoView({behavior:'smooth',block:'center'});
+        q.style.outline='2px solid var(--danger)';
+        setTimeout(()=>q.style.outline='none',1500);
+        setStatus('Faltan respuestas requeridas.', 'error');
+        return false;
+      }
+    }
+    // required inputs
+    for(const inp of document.querySelectorAll('input[required][type=text], input[required][type=number]')){
+      if(inp.value===''){
+        inp.focus();
+        setStatus('Faltan respuestas requeridas.', 'error');
+        return false;
+      }
+    }
+    setStatus('');
+    return true;
+  }
+
+  // --------- GRÁFICOS ---------
+  let chart1, chart2;
+  function toLikertScore(val){
+    const map = {"Siempre":5,"La mayoría de las veces":4,"Muchas veces":4,"Algunas veces":3,"Sólo unas pocas veces":2,"Sólo alguna vez":2,"Nunca":1,
+                 "Totalmente cierta":5,"Casi siempre cierta":4,"No sé":3,"Casi siempre falsa":2,"Totalmente falsa":1,
+                 "Excelente":5,"Muy buena":4,"Buena":3,"Regular":2,"Mala":1,
+                 "No":1,"Sí":5};
+    return map[val] ?? null;
+  }
+  function buildCharts(data){
+    // Promedio por bloque mayor
+    const blocks = {
+      Demográficos:['Sexo','Edad'],
+      Salud:['SG1','SG2','SG3','SG4','SG5','SM1','SM2','SM3','SM4','SM5','VT1','VT2','VT3','VT4','AT1','EP1','SR1','SR2','SR3','SR4','SR5','SR6','SR7','SR8','SR9','SR10','SR11','SR12'],
+      Trabajo:['TE1','TE2','TE3','TE4','TE5','TE6','TE7','TE8','TE9','TE10','TE11','TE12','TE13','TE14','TE15','TE16','TE17','TE18','TE19','TE20','TE21'],
+      Licencias:['LM1','LM3'],
+      Psicosocial:['CU1','CU2','CU3','CU4','CU5','CU6','CU7','CO1','CO2','CO3','CO4','CO5','CO6','CO7','CO8','EM1','EM2','EE1','EE2','ES1','ES2','ES3','ES4','IN1','IN2','IN3','IN4','IN5','IN6','IN7','CT1','CT2','CT3','CT4','PD1','PD2','PD3','PD4','PD5','PD6','PD7','ST1','ST2','ST3','IE1','IE2','IE3','IE4','RL1','RL2','RL3','RL4','CR1','CR2','CR3','CR4','CR5','CL1','CL2','CL3','CL4','CL5','CL6','RS1','RS2','RS3','RS4','RS5','RC1','RC2','RC3','RC4','RC5','RC6','ET1','ET2','ET3','ET4','ET5','IC1','IC2','IC3','IC4','IC5','IT1','IT2','IT3','DP1','DP2']
+    };
+    const labels=[], values=[];
+    for(const [k,arr] of Object.entries(blocks)){
+      const scores = arr.map(c=>toLikertScore(data[c])).filter(v=>v!=null);
+      if(scores.length){
+        const avg = scores.reduce((a,b)=>a+b,0)/scores.length;
+        labels.push(k); values.push(Number(avg.toFixed(2)));
+      }
+    }
+    const ctx1 = byId('chartBloques').getContext('2d');
+    if(chart1) chart1.destroy();
+    chart1 = new Chart(ctx1,{type:'bar',data:{labels, datasets:[{label:'Promedio por bloque (1–5)', data:values}]},options:{responsive:true, scales:{y:{min:1,max:5}}}});
+
+    // Distribución global de respuestas Likert
+    const dist = {1:0,2:0,3:0,4:0,5:0};
+    Object.values(data).forEach(v=>{const s=toLikertScore(v); if(s) dist[s]++});
+    const ctx2 = byId('chartLikert').getContext('2d');
+    if(chart2) chart2.destroy();
+    chart2 = new Chart(ctx2,{type:'pie',data:{labels:['1','2','3','4','5'],datasets:[{data:[dist[1],dist[2],dist[3],dist[4],dist[5]]}]}});
+
+    byId('jsonOut').textContent = JSON.stringify(data,null,2);
+    byId('resultados').classList.remove('hide');
+  }
+
+  function chartImages(){
+    return {
+      bloques: byId('chartBloques').toDataURL('image/png'),
+      likert: byId('chartLikert').toDataURL('image/png')
+    };
+  }
+
+  // --------- ENVÍO EMAIL ---------
+  const EMAIL_TO = 'valeskacandia16@gmail.com';
+  function emailConfigured(){
+    const pub = byId('cfg_public').value.trim();
+    const service = byId('cfg_service').value.trim();
+    const template = byId('cfg_template').value.trim();
+    return pub && service && template ? {pub,service,template} : null;
+  }
+
+  async function sendEmail(data){
+    const cfg = emailConfigured();
+    const subject = `SUSESO/ISTAS21 – Respuesta ${new Date().toLocaleString()}`;
+    const bodyText = `Destino: ${EMAIL_TO}\n\n`+JSON.stringify(data,null,2);
+
+    // Generar imágenes base64 de los gráficos (si existen)
+    let imgs={};
+    try{ imgs = chartImages(); }catch(e){}
+
+    if(cfg){
+      try{
+        emailjs.init(cfg.pub);
+        const params = {
+          to_email: EMAIL_TO,
+          subject,
+          message: bodyText,
+          json: JSON.stringify(data),
+          chart_bloques: imgs.bloques,
+          chart_likert: imgs.likert
+        };
+        await emailjs.send(cfg.service, cfg.template, params);
+        setStatus('Enviado por EmailJS correctamente ✅', 'success');
+        return true;
+      }catch(err){
+        console.error(err);
+        setStatus('No se pudo enviar con EmailJS. Se abrirá su correo como respaldo.', 'error');
+      }
+    }
+
+    // Respaldo: mailto (abre el cliente de correo del usuario)
+    const mailto = `mailto:${encodeURIComponent(EMAIL_TO)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    window.location.href = mailto;
+    return false;
+  }
+
+  // --------- EXPORTACIÓN ---------
+  function download(filename, content){
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([content],{type:'application/json'}));
+    a.download=filename; a.click(); URL.revokeObjectURL(a.href);
+  }
+
+  // --------- HANDLERS ---------
+  byId('btnPreview').addEventListener('click', (e)=>{
+    if(!allRequiredAnswered()) return;
+    const data = getAnswers();
+    buildCharts(data);
+    setStatus('Previsualización generada.', 'success');
+    window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  });
+
+  byId('btnExport').addEventListener('click', ()=>{
+    const data = getAnswers();
+    download('suseso-istas21-respuestas.json', JSON.stringify(data,null,2));
+    setStatus('Descarga de JSON iniciada.', 'success');
+  });
+
+  byId('form').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    if(!allRequiredAnswered()) return;
+    const data = getAnswers();
+    // Guardar local (por si acaso)
+    try{ const prev = JSON.parse(localStorage.getItem('encuestas')||'[]'); prev.push(data); localStorage.setItem('encuestas', JSON.stringify(prev)); }catch(err){}
+    buildCharts(data);
+    setStatus('Enviando…');
+    await sendEmail(data);
+  });
+  </script>
+</body>
+</html>
